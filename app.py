@@ -19,8 +19,14 @@ tasks_results = {}
 
 
 class Tasks:
+    """Class for storing info for every task and return info and results"""
+
     def __init__(self, task_uuid, queue_urls):
-       
+        """
+        Init new class copy
+        :param task_uuid: UUID of task
+        :param queue_urls: queue URLs
+        """
         self.found_urls = {}
         self.urls_done = {}
         self.time_takes = None
@@ -32,7 +38,12 @@ class Tasks:
             self.found_urls[url] = []
 
     def prepare_url(self, src_url, url):
-      
+        """
+        Formating URL
+        :param src_url: root URL
+        :param url: URL scraped
+        :return: formated URL
+        """
         if re.match(r'^[/]{2}.*', url):
             return f'http:{url}'
         elif re.match(r'^/\w+.*', url):
@@ -42,7 +53,12 @@ class Tasks:
         return url
 
     def _add_url(self, src_url, url):
-      
+        """
+        Check if url fit info that needed, add it to results
+        :param src_url: main URL
+        :param url: URL scraped
+        :return: None
+        """
         url_needed = False
         for pat in ['.gif', '.jpg', '.png']:
             if pat in url:
@@ -53,7 +69,12 @@ class Tasks:
                 self.found_urls[src_url].append(url)
 
     def add_res(self, src_url, urls):
-      
+        """
+        Processing with scraped URL
+        :param src_url: Main URL
+        :param urls: URL scraped
+        :return:
+        """
         if isinstance(urls, str):
             self._add_url(src_url, urls)
         else:
@@ -61,14 +82,21 @@ class Tasks:
                 self._add_url(src_url, url)
 
     def finished(self, url):
-     
+        """
+        Set URL as finished to scrape
+        :param url: Main URL
+        :return:
+        """
         self.urls_done[url] = True
         if all(self.urls_done.values()):
             self.time_takes = time() - self.time_start
             logging.info(f'{self.task_uuid} Took {self.time_takes}')
 
     def status(self):
-      
+        """
+        Return JSON status
+        :return:
+        """
         result = {"completed": sum(self.urls_done.values()),
                   "inprogress": len(self.urls_done.values()) - sum(self.urls_done.values())}
         if self.time_takes:
@@ -80,12 +108,25 @@ class Tasks:
 
 
 def start_scraping(task_id, url_list, threads=1):
-  
+    """
+    Start scraping process
+
+    :param task_id: UUID of process
+    :param url_list: list URLs
+    :param threads: How many threads need to run
+    :return:
+    """
     task = Tasks(task_id, url_list)
     tasks_results[task_id] = task
 
     def worker_starer(task_queue, task):
-      
+        """
+        Thread worker scraper
+
+        :param task_queue: queue with URLs for scrape
+        :param task: Class where need store information
+        :return:
+        """
 
         ua = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
@@ -93,7 +134,14 @@ def start_scraping(task_id, url_list, threads=1):
         logger.info(f'Start task {task_queue}')
 
         def parse_url(src_url, url, deep_lv=1):
-       
+            """
+            Parser specific URL
+
+            :param src_url: main root source URL
+            :param url: URL to parse
+            :param deep_lv: how deep looking
+            :return:
+            """
             try:
                 r = requests.get(url, headers=ua)
                 soup = BeautifulSoup(r.text, "html.parser")
@@ -134,7 +182,11 @@ def start_scraping(task_id, url_list, threads=1):
 
 @app.route('/status/<task_uuid>', methods=['GET'])
 def return_status(task_uuid):
-  
+    """
+    Return status info by UUID
+    :param task_uuid: UUID
+    :return: JSON ststus
+    """
     if task_uuid in tasks_results:
         return jsonify(tasks_results[task_uuid].status())
     else:
@@ -143,7 +195,10 @@ def return_status(task_uuid):
 
 @app.route('/statistics', methods=['GET'])
 def return_statistics():
-
+    """
+    Return statistics info
+    :return: JSON
+    """
     info = {'tasks': len(tasks_results.keys()),
             'urls_requseted': sum([len(task.urls_done.keys()) for task_uuid, task in tasks_results.items()]),
             'time_taken': {},
@@ -156,7 +211,11 @@ def return_statistics():
 
 @app.route('/result/<task_uuid>', methods=['GET'])
 def return_result(task_uuid):
-  
+    """
+    Return Status for specific UUID
+    :param task_uuid:UUID
+    :return: JSON
+    """
     if task_uuid in tasks_results:
         return jsonify(tasks_results[task_uuid].found_urls)
     else:
@@ -165,7 +224,10 @@ def return_result(task_uuid):
 
 @app.route('/', methods=['POST'])
 def get_task():
- 
+    """
+    Initialize new task , need post JSON
+    :return: JSON info about task
+    """
     if not request.json:
         abort(400)
     from_post = request.json
