@@ -14,3 +14,7 @@ from your application (using its job ID).
 (to avoid a large amount of data): Fetch the images for each given URL and their children.
 7. By default, the app will crawl using one thread/coroutine, however,
 we should be able to specify the number of thread/coroutine to use when creating a new job.
+
+## Getting started
+Let's start by cloning the repository by running below command in cmd
+<br><br> `git clone https://github.com/Navjotbians/image-crawler-app`
