@@ -3,7 +3,7 @@
 
 # # IMAGE CRAWLER
 
-# In[28]:
+# In[25]:
 
 
 import requests as req
@@ -17,7 +17,7 @@ import re
 from flask import abort, Flask, request, jsonify
 
 
-# In[29]:
+# In[26]:
 
 
 #url = "https://www.airbnb.co.uk/s/Ljubljana--Slovenia/homes?tab_id=home_tab&refinement_paths%5B%5D=%2Fhomes&query=Ljubljana%2C%20Slovenia&place_id=ChIJ0YaYlvUxZUcRIOw_ghz4AAQ&checkin=2020-11-01&checkout=2020-11-08&source=structured_search_input_header&search_type=autocomplete_click"
@@ -25,7 +25,7 @@ from flask import abort, Flask, request, jsonify
 # url2 = "http://4chan.org/"
 
 
-# In[30]:
+# In[27]:
 
 
 logging.basicConfig(format='scraper - %(asctime)s - %(name)s - %(threadName)s - %(levelname)s - %(message)s',
@@ -35,7 +35,7 @@ app = Flask(__name__)
 tasks_results = {}
 
 
-# In[31]:
+# In[28]:
 
 
 class Tasks:
@@ -92,7 +92,7 @@ class Tasks:
         return str(self.status())
 
 
-# In[32]:
+# In[29]:
 
 
 def start_scraping(task_id, url_list, threads=1):
@@ -104,7 +104,7 @@ def start_scraping(task_id, url_list, threads=1):
         import requests
         from bs4 import BeautifulSoup
         ua = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
         }
 
         def parse_url(src_url, url, deep_lv=1):
@@ -145,7 +145,7 @@ def start_scraping(task_id, url_list, threads=1):
         queue.put(None)
 
 
-# In[33]:
+# In[30]:
 
 
 @app.route('/status/<task_uuid>', methods=['GET'])
@@ -156,7 +156,7 @@ def return_status(task_uuid):
         abort(400)
 
 
-# In[34]:
+# In[31]:
 
 
 @app.route('/statistics', methods=['GET'])
@@ -169,17 +169,18 @@ def return_statistics():
     return jsonify(info)
 
 
-# In[36]:
+# In[32]:
 
 
 @app.route('/result/<task_uuid>', methods=['GET'])
-def return_result(task_uuid):if task_uuid in tasks_results:
+def return_result(task_uuid):
+    if task_uuid in tasks_results:
         return jsonify(tasks_results[task_uuid].found_urls)
     else:
         abort(400)
 
 
-# In[ ]:
+# In[33]:
 
 
 @app.route('/', methods=['POST'])
@@ -196,15 +197,12 @@ def get_task():
     return jsonify(result)
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(threaded=False, host='0.0.0.0', port=port)
-
 
 # In[ ]:
 
 
-
+port = int(os.environ.get('PORT', 5000))
+app.run(threaded=False, host='0.0.0.0', port=port)
 
 
 # In[ ]:
