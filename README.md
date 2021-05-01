@@ -34,6 +34,7 @@ Let's start by cloning the repository by running below command in cmd
 ![](images/result.JPG) <br>
 Give all the found URLs
 <br>
+<br>
 `$> curl -X GET http://localhost:5000/statistics` <br>
 ![](images/statistics.JPG) <br>
 Provides information on task execution like how many links have been processed and time taken by them.
