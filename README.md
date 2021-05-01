@@ -17,4 +17,5 @@ we should be able to specify the number of thread/coroutine to use when creating
 
 ## Getting started
 Let's start by cloning the repository by running below command in cmd
-<br><br> `git clone https://github.com/Navjotbians/image-crawler-app`
+<br><br> `$> git clone https://github.com/Navjotbians/image-crawler-app` <br>
+`$> cd repository`
