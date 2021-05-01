@@ -1,0 +1,186 @@
+
+import logging
+import os
+import uuid
+import re
+import requests
+
+from threading import Thread
+from time import time
+from bs4 import BeautifulSoup
+from queue import Queue
+from flask import abort, Flask, request, jsonify
+
+logging.basicConfig(format='scraper - %(asctime)s - %(name)s - %(threadName)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
+app = Flask(__name__)
+tasks_results = {}
+
+
+class Tasks:
+    def __init__(self, task_uuid, queue_urls):
+       
+        self.found_urls = {}
+        self.urls_done = {}
+        self.time_takes = None
+        self.time_start = time()
+        self.task_uuid = task_uuid
+        self.time_takes = None
+        for url in queue_urls:
+            self.urls_done[url] = False
+            self.found_urls[url] = []
+
+    def prepare_url(self, src_url, url):
+      
+        if re.match(r'^[/]{2}.*', url):
+            return f'http:{url}'
+        elif re.match(r'^/\w+.*', url):
+            return f'{src_url}{url}'
+        elif not re.match(r'^http.*', url):
+            return f'{src_url}/{url}'
+        return url
+
+    def _add_url(self, src_url, url):
+      
+        url_needed = False
+        for pat in ['.gif', '.jpg', '.png']:
+            if pat in url:
+                url_needed = True
+                break
+        if url_needed:
+            if url not in self.found_urls[src_url]:
+                self.found_urls[src_url].append(url)
+
+    def add_res(self, src_url, urls):
+      
+        if isinstance(urls, str):
+            self._add_url(src_url, urls)
+        else:
+            for url in urls:
+                self._add_url(src_url, url)
+
+    def finished(self, url):
+     
+        self.urls_done[url] = True
+        if all(self.urls_done.values()):
+            self.time_takes = time() - self.time_start
+            logging.info(f'{self.task_uuid} Took {self.time_takes}')
+
+    def status(self):
+      
+        result = {"completed": sum(self.urls_done.values()),
+                  "inprogress": len(self.urls_done.values()) - sum(self.urls_done.values())}
+        if self.time_takes:
+            result.update({"time_takes": f'{int(self.time_takes)} sec'})
+        return result
+
+    def __repr__(self):
+        return str(self.status())
+
+
+def start_scraping(task_id, url_list, threads=1):
+  
+    task = Tasks(task_id, url_list)
+    tasks_results[task_id] = task
+
+    def worker_starer(task_queue, task):
+      
+
+        ua = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+        }
+        logger.info(f'Start task {task_queue}')
+
+        def parse_url(src_url, url, deep_lv=1):
+       
+            try:
+                r = requests.get(url, headers=ua)
+                soup = BeautifulSoup(r.text, "html.parser")
+                hrefs = soup.find_all(href=True)
+                images = soup.findAll('img')
+                task.add_res(src_url, [task.prepare_url(url, link['src']) for link in images])
+
+                if deep_lv > 0:
+                    for href in hrefs:
+                        parse_url(src_url, task.prepare_url(url, href['href']), deep_lv=deep_lv - 1)
+            except:
+                logger.warning(f'Cant go by link {url}')
+                pass
+
+        while True:
+            url = task_queue.get()
+            if url is None:
+                break
+            logger.info(f'Start parsing URL: {url}')
+            parse_url(url, url)
+            task.finished(url)
+            task_queue.task_done()
+
+    queue = Queue()
+    for x in range(threads):
+        worker = Thread(target=worker_starer, name=f"Thread_{x}_{task_id}", args=(queue, task))
+        # Setting daemon to True will let the main thread exit even though the workers are blocking
+        worker.daemon = True
+        worker.start()
+    # Put the tasks into the queue
+    for link in url_list:
+        logger.info('{} Queueing {}'.format(task_id, link))
+        queue.put(link)
+    # Add flag break threads
+    for x in range(threads):
+        queue.put(None)
+
+
+@app.route('/status/<task_uuid>', methods=['GET'])
+def return_status(task_uuid):
+  
+    if task_uuid in tasks_results:
+        return jsonify(tasks_results[task_uuid].status())
+    else:
+        abort(400)
+
+
+@app.route('/statistics', methods=['GET'])
+def return_statistics():
+
+    info = {'tasks': len(tasks_results.keys()),
+            'urls_requseted': sum([len(task.urls_done.keys()) for task_uuid, task in tasks_results.items()]),
+            'time_taken': {},
+            'tasks_ids': {}}
+    for task_uuid, task in tasks_results.items():
+        info['tasks_ids'][task_uuid] = sum(len(task.found_urls[key]) for key in task.found_urls.keys())
+        info['time_taken'][task_uuid] = '{:.2f}-Seconds'.format(time() - task.time_start)
+    return jsonify(info)
+
+
+@app.route('/result/<task_uuid>', methods=['GET'])
+def return_result(task_uuid):
+  
+    if task_uuid in tasks_results:
+        return jsonify(tasks_results[task_uuid].found_urls)
+    else:
+        abort(400)
+
+
+@app.route('/', methods=['POST'])
+def get_task():
+ 
+    if not request.json:
+        abort(400)
+    from_post = request.json
+    n_threads = 1
+    urls = from_post['urls']
+    if 'n_threads' in from_post:
+        n_threads = int(from_post['n_threads'])
+    if not isinstance(urls, list):
+        abort(400)
+    taks_uuid = str(uuid.uuid1())
+    start_scraping(taks_uuid, urls, n_threads)
+    result = {"job_id": taks_uuid, "threads": str(n_threads), "urls": urls}
+    return jsonify(result)
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(threaded=False, host='0.0.0.0', port=port, debug=True)
