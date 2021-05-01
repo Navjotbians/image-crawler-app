@@ -29,10 +29,10 @@ Let's start by cloning the repository by running below command in cmd
 <br>
 `$> curl -X GET http://localhost:5000/status/5341f266-aa93-11eb-8fef-0242ac140002` <br>
 ![](images/status.JPG) <br>
-<br>>
+<br>
 `$> curl -X GET http://localhost:5000/result/5341f266-aa93-11eb-8fef-0242ac140002` <br>
 ![](images/result.JPG) <br>
-
+Give all the found URLs
 <br>
 `$> curl -X GET http://localhost:5000/statistics` <br>
 ![](images/statistics.JPG) <br>
