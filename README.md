@@ -26,9 +26,13 @@ Let's start by cloning the repository by running below command in cmd
 
 `$> curl -X POST http://localhost:5000/ -H 'Content-Type: application/json'  -d '{"n_threads": 2, "urls": ["https://golang.org", "https://4chan.org/"]}'` <br>
 ![](images/1.JPG) <br>
+Specify number of thread you want to use and URLs
+<br>
 <br>
 `$> curl -X GET http://localhost:5000/status/5341f266-aa93-11eb-8fef-0242ac140002` <br>
 ![](images/status.JPG) <br>
+Give status of the task
+<br>
 <br>
 `$> curl -X GET http://localhost:5000/result/5341f266-aa93-11eb-8fef-0242ac140002` <br>
 ![](images/result.JPG) <br>
