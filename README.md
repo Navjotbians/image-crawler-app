@@ -32,10 +32,11 @@ Let's start by cloning the repository by running below command in cmd
 <br>>
 `$> curl -X GET http://localhost:5000/result/5341f266-aa93-11eb-8fef-0242ac140002` <br>
 ![](images/result.JPG) <br>
+
 <br>
 `$> curl -X GET http://localhost:5000/statistics` <br>
 ![](images/statistics.JPG) <br>
-
+Provides information on task execution like how many links have been processed and time taken by them.
 
 
 
