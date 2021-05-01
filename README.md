@@ -21,6 +21,7 @@ Let's start by cloning the repository by running below command in cmd
 `$> cd repository` <br>
 `$> docker-compose up` <br>
 `$> curl -X POST http://localhost:5000/ -H 'Content-Type: application/json'  -d '{"n_threads": 2, "urls": ["https://golang.org", "https://4chan.org/"]}'` <br>
-
+Example: <br>
+![](images/1.JPG)
 
 
