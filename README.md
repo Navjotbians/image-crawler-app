@@ -43,7 +43,7 @@ curl -X GET http://localhost:5000/status/0216a0a0-ab90-11eb-9f69-0242ac140002
 {"completed":1,"inprogress":1}
 {"completed":2,"inprogress":0,"time_takes":"63 sec"}
 ```
-* <b>Check all the found URLs</b>
+* <b>Check all the found image URLs</b>
 ```bash
 curl -X GET http://localhost:5000/result/0216a0a0-ab90-11eb-9f69-0242ac140002
 ```
@@ -57,7 +57,7 @@ Output
 ....
 ]}
 ```
-### Extra capability to check the statistics of the executed jobs
+### Extra capability to check the history of jobs done
 * <b>This command gives the history of all the tasks you have executed after running the docker</b>
 ```bash
 curl -X GET http://localhost:5000/statistics
