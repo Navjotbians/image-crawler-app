@@ -61,8 +61,8 @@ Output
 ....
 ]}
 ```
-### Extra capabilities
-## Statistics to check the history of jobs done
+## Extra capabilities
+### Statistics to check the history of jobs done
 * <b>This command gives the history of all the tasks you have executed after running the docker</b>
 ```bash
 curl -X GET http://localhost:5000/statistics
@@ -79,20 +79,21 @@ Below are the outputs: <br>
 ```
 Statistics return JSON that shows history of all the jobs we have executed after running the docker container.
 
-* `tasks` - represents the number of POST requests(job) you have executed so far. If `tasks` : 2 that means I have executed POST request twice and each POST request gets a unique job ID.
-* `"task_ids"` - Is a dictionary where keys are job ID's and values are the total number of image URLs found during the execution of respective job.
-* `"time_taken"` - Is a dictionary where keys are job ID's and values are the total execution time taken by the respective job.
-* `"urls_requested"` - It shows the total number of root urls executed. When we run POST request for first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"` : 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4.
+* <b>`tasks`</b> - represents the number of POST requests(job) you have executed so far. If `tasks` : 2 that means I have executed POST request twice and each POST request gets a unique job ID.
+* <b>`"task_ids"` </b>- Is a dictionary where keys are job ID's and values are the total number of image URLs found during the execution of respective job.
+* <b>`"time_taken"` </b>- Is a dictionary where keys are job ID's and values are the total execution time taken by the respective job.
+* <b>`"urls_requested"` </b>- It shows the total number of root urls executed. When we run POST request for first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"` : 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4.
 <br>
 This history will get distroyed when you stop and exit the docker container
 
-### `docker-compose.yml` 
+## `docker-compose.yml` 
 Instead of using `Dockerfile`  we can use `docker-compose.yml` to create container using below commands if your system is configured for `docker-compose`
 ```bash
 git clone https://github.com/Navjotbians/image-crawler-app
 cd image-crawler-app
 docker-compose up
 ```
+This is more production friendly as it creates multiple docker containers and also avoid crashing the running docker containers when changes were made to the code at backend. 
 
 
 ## Improvement Scope
