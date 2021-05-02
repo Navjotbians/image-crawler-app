@@ -205,7 +205,11 @@ def return_statistics():
             'tasks_ids': {}}
     for task_uuid, task in tasks_results.items():
         info['tasks_ids'][task_uuid] = sum(len(task.found_urls[key]) for key in task.found_urls.keys())
-        info['time_taken'][task_uuid] = '{:.2f}-Seconds'.format(time() - task.time_start)
+        if not task.time_takes:
+            delta = time() - task.time_start
+        else:
+            delta = task.time_takes
+        info['time_taken'][task_uuid] = '{:.2f}-seconds'.format(delta)
     return jsonify(info)
 
 
