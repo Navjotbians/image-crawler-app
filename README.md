@@ -61,7 +61,8 @@ Output
 ....
 ]}
 ```
-### Extra capability to check the history of jobs done
+### Extra capabilities
+## Statistics to check the history of jobs done
 * <b>This command gives the history of all the tasks you have executed after running the docker</b>
 ```bash
 curl -X GET http://localhost:5000/statistics
@@ -84,6 +85,15 @@ Statistics return JSON that shows history of all the jobs we have executed after
 * `"urls_requested"` - It shows the total number of root urls executed. When we run POST request for first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"` : 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4.
 <br>
 This history will get distroyed when you stop and exit the docker container
+
+### `docker-compose.yml` 
+Instead of using `Dockerfile`  we can use `docker-compose.yml` to create container using below commands if your system is configured for `docker-compose`
+```bash
+git clone https://github.com/Navjotbians/image-crawler-app
+cd image-crawler-app
+docker-compose up
+```
+
 
 ## Improvement Scope
 * Multi-threading and coroutine can be used to see if the throughput time improves
