@@ -35,24 +35,38 @@ curl -X POST http://localhost:5000/ -H 'Content-Type: application/json' -d '{"n_
 ```
 * Check the status of task 
 ```bash
-`curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
+curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
 ```
   Output 
 
 ```bash
 {"completed":1,"inprogress":1}
+{"completed":2,"inprogress":0,"time_takes":"61 sec"}
 ```
-Give status of the task
-<br>
-<br>
-`$> curl -X GET http://localhost:5000/result/5341f266-aa93-11eb-8fef-0242ac140002` <br>
-![](images/result.JPG) <br>
-Give all the found URLs
-<br>
-<br>
-`$> curl -X GET http://localhost:5000/statistics` <br>
-![](images/statistics.JPG) <br>
-Provides information on task execution like how many links have been processed and time taken by them.
+* Check all the found URLs
+```bash
+curl -X GET http://localhost:5000/result/9d5d9de0-ab84-11eb-9bd3-0242ac140002
+```
+Output
+
+```bash
+{"https://4chan.org/":["http://s.4cdn.org/image/fp/logo-transparent.png","http://i.4cdn.org/biz/1619953507122s.jpg","http://i.4cdn.org/vg/1619905159716s.jpg","http://i.4cdn.org/a/1619966517054s.jpg","http://i.4cdn.org/g/1619861690497s.jpg","http://i.4cdn.org/tv/1619951232990s.jpg",
+....
+],
+"https://golang.org":["https://golang.org/lib/godoc/images/footer-gopher.jpg","https://golang.org///lib/godoc/images/footer-gopher.jpg","https://golang.org/doc//doc/gopher/doc.png","https://golang.org/doc//doc/gopher/talks.png",
+....
+]}
+```
+
+* This command gives the statistics of all the tasks you have executed after running the docker
+```bash
+curl -X GET http://localhost:5000/statistics
+```
+Output
+
+```bash
+{"tasks":1,"tasks_ids":{"99d828fe-ab82-11eb-8062-0242ac140002":2929},"time_taken":{"99d828fe-ab82-11eb-8062-0242ac140002":"61.20-seconds"},"urls_requseted":2}
+```
 
 ## Improvement Scope
 * Multi-threading and coroutine can be used to see if the throughput time improves
