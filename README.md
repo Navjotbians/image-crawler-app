@@ -33,7 +33,7 @@ curl -X POST http://localhost:5000/ -H 'Content-Type: application/json' -d '{"n_
 ```bash
 {"job_id":"9d5d9de0-ab84-11eb-9bd3-0242ac140002","threads":"5","urls":["https://golang.org","https://4chan.org/"]}
 ```
-* <b>Check the status of task<b/>
+* <b>Check the status of task</b>
 ```bash
 curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
 ```
@@ -43,7 +43,7 @@ curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
 {"completed":1,"inprogress":1}
 {"completed":2,"inprogress":0,"time_takes":"61 sec"}
 ```
-* <b>Check all the found URLs<b/>
+* <b>Check all the found URLs</b>
 ```bash
 curl -X GET http://localhost:5000/result/9d5d9de0-ab84-11eb-9bd3-0242ac140002
 ```
@@ -58,7 +58,7 @@ Output
 ]}
 ```
 
-* <b>This command gives the statistics of all the tasks you have executed after running the docker<b/>
+* <b>This command gives the statistics of all the tasks you have executed after running the docker</b>
 ```bash
 curl -X GET http://localhost:5000/statistics
 ```
