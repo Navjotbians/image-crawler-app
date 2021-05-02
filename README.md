@@ -31,21 +31,21 @@ curl -X POST http://localhost:5000/ -H 'Content-Type: application/json' -d '{"n_
   Output
 
 ```bash
-{"job_id":"9d5d9de0-ab84-11eb-9bd3-0242ac140002","threads":"5","urls":["https://golang.org","https://4chan.org/"]}
+{"job_id":"0216a0a0-ab90-11eb-9f69-0242ac140002","threads":"5","urls":["https://golang.org","https://4chan.org/"]}
 ```
 * <b>Check the status of task</b>
 ```bash
-curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
+curl -X GET http://localhost:5000/status/0216a0a0-ab90-11eb-9f69-0242ac140002
 ```
   Output 
 
 ```bash
 {"completed":1,"inprogress":1}
-{"completed":2,"inprogress":0,"time_takes":"61 sec"}
+{"completed":2,"inprogress":0,"time_takes":"63 sec"}
 ```
 * <b>Check all the found URLs</b>
 ```bash
-curl -X GET http://localhost:5000/result/9d5d9de0-ab84-11eb-9bd3-0242ac140002
+curl -X GET http://localhost:5000/result/0216a0a0-ab90-11eb-9f69-0242ac140002
 ```
 Output
 
@@ -57,15 +57,20 @@ Output
 ....
 ]}
 ```
-
-* <b>This command gives the statistics of all the tasks you have executed after running the docker</b>
+### Extra capability to check the statistics of the executed jobs
+* <b>This command gives the history of all the tasks you have executed after running the docker</b>
 ```bash
 curl -X GET http://localhost:5000/statistics
 ```
-Output
+Below are the outputs: <br>	
+1. when you have executed POST request just once after running the docker container
 
 ```bash
-{"tasks":1,"tasks_ids":{"99d828fe-ab82-11eb-8062-0242ac140002":2929},"time_taken":{"99d828fe-ab82-11eb-8062-0242ac140002":"61.20-seconds"},"urls_requseted":2}
+{"tasks":1,"tasks_ids":{"0216a0a0-ab90-11eb-9f69-0242ac140002":3146},"time_taken":{"0216a0a0-ab90-11eb-9f69-0242ac140002":"63.40-seconds"},"urls_requseted":2}
+```
+2. when you have executed POST request 2 times after running the docker container
+```bash
+{"tasks":2,"tasks_ids":{"0216a0a0-ab90-11eb-9f69-0242ac140002":3146,"93941796-ab91-11eb-929f-0242ac140002":3088},"time_taken":{"0216a0a0-ab90-11eb-9f69-0242ac140002":"63.40-seconds","93941796-ab91-11eb-929f-0242ac140002":"60.93-seconds"},"urls_requseted":4}
 ```
 
 ## Improvement Scope
