@@ -72,6 +72,8 @@ Below are the outputs: <br>
 ```bash
 {"tasks":2,"tasks_ids":{"0216a0a0-ab90-11eb-9f69-0242ac140002":3146,"93941796-ab91-11eb-929f-0242ac140002":3088},"time_taken":{"0216a0a0-ab90-11eb-9f69-0242ac140002":"63.40-seconds","93941796-ab91-11eb-929f-0242ac140002":"60.93-seconds"},"urls_requseted":4}
 ```
+Statistics return JSON 
+* `tasks` - represents the number of POST requests(job) you have executed so far after running the docker container. In this code `tasks` :2 because I have executed POST request twice.
 
 ## Improvement Scope
 * Multi-threading and coroutine can be used to see if the throughput time improves
