@@ -24,8 +24,7 @@ Let's start by cloning the repository by running below command in cmd
 
 ## Run following commands 
 
-* 
-Specify number of thread you want to use and URLs
+* Specify number of thread you want to use and URLs
 ```bash
 curl -X POST http://94.237.94.111:5000/ -H 'Content-Type: application/json' -d '{"n_threads": 5, "urls": ["https://golang.org", "https://4chan.org/"]}'
 ```
@@ -34,8 +33,7 @@ Output
 ```bash
 {"job_id":"9d5d9de0-ab84-11eb-9bd3-0242ac140002","threads":"5","urls":["https://golang.org","https://4chan.org/"]}
 ```
-* 
-Check the status of task 
+* Check the status of task 
 ```bash
 `$> curl -X GET http://localhost:5000/status/9d5d9de0-ab84-11eb-9bd3-0242ac140002
 ```
