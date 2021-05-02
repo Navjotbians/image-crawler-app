@@ -78,6 +78,7 @@ Statistics return JSON that shows history of all the jobs we have executed after
 * `"task_ids"` - Is a dictionary where keys are job ID's and values are the total number of image URLs found during the execution of respective job.
 * `"time_taken"` - Is a dictionary where keys are job ID's and values are the total execution time taken by the respective job.
 * `"urls_requested"` - It shows the total number of root urls executed. When we run POST request for first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"` : 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4. <br>
+<br>
 This history will get distroyed when you stop and exit the docker container
 
 ## Improvement Scope
