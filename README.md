@@ -18,6 +18,13 @@ we should be able to specify the number of thread/coroutine to use when creating
 ## Getting started
 
 Let's start by cloning the repository by running below command in cmd
+
+```bash
+git clone https://github.com/Navjotbians/image-crawler-app
+cd image-crawler-app
+docker-compose up
+```
+
 <br><br> `$> git clone https://github.com/Navjotbians/image-crawler-app` <br>
 `$> cd repository` <br>
 `$> docker-compose up` <br>
