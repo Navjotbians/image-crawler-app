@@ -83,7 +83,7 @@ This history will get distroyed when you stop and exit the docker container
 ## Improvement Scope
 * Multi-threading and coroutine can be used to see if the throughput time improves
 * GUI can be built for easy access and visually appealing results
-* Funtions can be put into seperate scripts so that we have simple and readable `app.py` but in this case `Manager` need to be used to make this thing work  
+* Funtions can be put into seperate scripts so that we have simple and readable `app.py`
 
 
 
