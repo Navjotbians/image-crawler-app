@@ -17,17 +17,11 @@ we should be able to specify the number of thread/coroutine to use when creating
 
 ## Getting started
 
-Let's start by cloning the repository by running below command in cmd
+Let's start by cloning the repository and building the docker container by running below command in cmd
 
 ```bash
 docker build -t crawler_test -f Dockerfile ./
 docker run -p 5000:5000 crawler_test
-```
-
-```bash
-git clone https://github.com/Navjotbians/image-crawler-app
-cd image-crawler-app
-docker-compose up
 ```
 
 ## Run following commands 
