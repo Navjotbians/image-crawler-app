@@ -66,14 +66,14 @@ Below are the outputs: <br>
 {"tasks":2,"tasks_ids":{"0216a0a0-ab90-11eb-9f69-0242ac140002":3146,"93941796-ab91-11eb-929f-0242ac140002":3088},"time_taken":{"0216a0a0-ab90-11eb-9f69-0242ac140002":"63.40-seconds","93941796-ab91-11eb-929f-0242ac140002":"60.93-seconds"},"urls_requseted":4}
 ```
 Statistics return JSON that shows the history of all the jobs we have executed after running the docker container.
-* <b>`tasks`</b> - represents the number of POST requests(job) you have executed so far. If `tasks`: 2 that means I have executed POST request twice and each POST request gets a unique job ID.
+* <b>`"tasks"`</b> - represents the number of POST requests(job) you have executed so far. If `"tasks"`: 2 that means I have executed POST request twice and each POST request gets a unique job ID.
 * <b>`"task_ids"` </b>- Is a dictionary where keys are job IDs and values are the total number of image URLs found during the execution of the respective job.
 * <b>`"time_taken"` </b>- Is a dictionary where keys are job IDs and values are the total execution time taken by the respective job.
 * <b>`"urls_requested"` </b>- It shows the total number of root urls executed. When we run POST request for the first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"`: 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4.
 <br>
 This history will get destroyed when you stop and exit the docker container
 
-## `docker-compose.yml` 
+### `docker-compose.yml` 
 Instead of using `Dockerfile`  we can use `docker-compose.yml` to create a container using the below commands if your system is configured for `docker-compose`
 ```bash
 git clone https://github.com/Navjotbians/image-crawler-app
