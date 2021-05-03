@@ -72,6 +72,7 @@ Statistics return JSON that shows the history of all the jobs we have executed a
 * <b>`"urls_requested"` </b>- It shows the total number of root urls executed. When we run POST request for the first time, `"urls_requested"` will be 2 because we are passing 2 root urls (`["https://golang.org","https://4chan.org/"]`) in the POST request. If `"urls_requested"`: 4 that means we have executed our post request twice with two root urls in each request therefore the total requested urls become 4.
 <br>
 This history will get destroyed when you stop and exit the docker container
+
 ## `docker-compose.yml` 
 Instead of using `Dockerfile`  we can use `docker-compose.yml` to create a container using the below commands if your system is configured for `docker-compose`
 ```bash
