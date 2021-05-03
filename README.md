@@ -80,7 +80,7 @@ git clone https://github.com/Navjotbians/image-crawler-app
 cd image-crawler-app
 docker-compose up
 ```
-This is more production-friendly as it creates multiple docker containers and also avoids crashing up the running docker containers when changes were made to the code at backend. 
+This is more production-friendly as it creates multiple docker containers and also avoids crashing the running docker containers when changes were made to the code at backend. 
 
 ## Improvement Scope
 * Multi-threading and coroutine can be used to see if the throughput time improves
